@@ -1,17 +1,42 @@
-cmake_minimum_required(VERSION 3.6)
-
-if (DEFINED ENV{VCPKG_ROOT})
-  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-endif ()
+cmake_minimum_required(VERSION 3.7) #Android variable is new in cmake version 3.7
 
 set(n clinfo)
 project(${n})
 
-find_package(OpenCL REQUIRED)
+if(NOT ANDROID)
+    if (DEFINED ENV{VCPKG_ROOT})
+      set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+    endif ()
 
-add_executable(${n} src/${n}.c)
-target_include_directories(${n} PUBLIC src)
-target_include_directories(${n} PUBLIC ${OpenCL_INCLUDE_DIRS})
-target_link_libraries(${n} ${OpenCL_LIBRARIES} ${CMAKE_DL_LIBS})
+    find_package(OpenCL REQUIRED)
 
-set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${n})
+    add_executable(${n} src/${n}.c)
+    target_include_directories(${n} PUBLIC src)
+    target_include_directories(${n} PUBLIC ${OpenCL_INCLUDE_DIRS})
+    target_link_libraries(${n} ${OpenCL_LIBRARIES} ${CMAKE_DL_LIBS})
+
+    set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${n})
+else()
+    #Get OpenCL headers directly
+    include(FetchContent)
+    FetchContent_Declare(
+        OpenCLHeader
+        GIT_REPOSITORY https://github.com/KhronosGroup/OpenCL-Headers.git
+        GIT_TAG origin/master
+    )
+    FetchContent_MakeAvailable(OpenCLHeader)
+    FetchContent_GetProperties(OpenCLHeader SOURCE_DIR OpenCLHeaderDir)
+    include_directories(${OpenCLHeaderDir})
+
+    #Find and kink with OpenCL lib
+    add_library(OpenCL SHARED IMPORTED)
+    if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+        find_file(OpenCLLibLocation libOpenCL.so PATHS "/system/vendor/lib64" "/system/lib64" REQUIRED)
+    else()
+        find_file(OpenCLLibLocation libOpenCL.so PATHS "/system/vendor/lib" "/system/lib" REQUIRED)
+    endif()
+
+    set_target_properties(OpenCL PROPERTIES IMPORTED_LOCATION ${OpenCLLibLocation})
+    add_executable(${n} src/${n}.c)
+    target_link_libraries(${n} PUBLIC OpenCL)
+endif()
