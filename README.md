@@ -87,7 +87,7 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE="<path_to_vcpkg>/scripts/buildsystems/vcpkg.cmak
 cmake --build .
 ```
 
-On Android, the OpenCL header files is automatically download from [KhronosGroup's repo](https://github.com/KhronosGroup/OpenCL-Headers) and the OpenCL runtime library is automatically found and linked. To build on Android, type these commands:
+On Android, the OpenCL header files is automatically download from [KhronosGroup's repo](https://github.com/KhronosGroup/OpenCL-Headers) and the OpenCL runtime library is automatically found and linked. Install a terminal emulator app like [termux](https://play.google.com/store/apps/details?id=com.termux&hl=en_US&gl=US), and install `cmake, git, clang` by `pkg install cmake git clang`. And type these commands to build:
 ```
 git clone https://github.com/HO-COOH/clinfo
 cd clinfo
