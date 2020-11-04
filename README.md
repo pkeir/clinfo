@@ -75,7 +75,9 @@ alt='Build status on AppVeyor'></a></td>
 </table>
 
 ## CMake support
-Cmake support is added for an alternative way to build on all platforms (Windows, Linux, Android). To build on Windows/Linux, type these commands:
+Cmake support is added for an alternative way to build on all platforms (Windows, Linux, Android). 
+
+On Windows/Linux, use ``vcpkg install OpenCL`` to install the OpenCL SDK. ``vcpkg`` can be installed [here](https://github.com/microsoft/vcpkg). Note: On 64-bit Windows, you may use ``vcpkg install OpenCL:x64-windows`` instead. To build on Windows/Linux, type these commands:
 ```
 git clone https://github.com/HO-COOH/clinfo
 cd clinfo
@@ -85,7 +87,7 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE="<path_to_vcpkg>/scripts/buildsystems/vcpkg.cmak
 cmake --build .
 ```
 
-To build on Android, type these commands:
+On Android, the OpenCL header files is automatically download from [KhronosGroup's repo](https://github.com/KhronosGroup/OpenCL-Headers) and the OpenCL runtime library is automatically found and linked. To build on Android, type these commands:
 ```
 git clone https://github.com/HO-COOH/clinfo
 cd clinfo
@@ -94,6 +96,5 @@ cd build
 cmake ..
 cmake --build .
 ```
-On Windows/Linux, use ``vcpkg install OpenCL`` to install the OpenCL SDK. ``vcpkg`` can be installed [here](https://github.com/microsoft/vcpkg). Note: On 64-bit Windows, you may use ``vcpkg install OpenCL:x64-windows`` instead.
 
-On Android, the OpenCL header files is automatically download from [KhronosGroup's repo](https://github.com/KhronosGroup/OpenCL-Headers) and the OpenCL runtime library is automatically found and linked.
+
