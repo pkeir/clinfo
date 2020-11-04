@@ -75,7 +75,17 @@ alt='Build status on AppVeyor'></a></td>
 </table>
 
 ## CMake support
-Cmake support is added for an alternative way to build on all platforms (Windows, Linux, Android). To build on all these platforms, type these commands:
+Cmake support is added for an alternative way to build on all platforms (Windows, Linux, Android). To build on Windows/Linux, type these commands:
+```
+git clone https://github.com/HO-COOH/clinfo
+cd clinfo
+mkdir build
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE="<path_to_vcpkg>/scripts/buildsystems/vcpkg.cmake"
+cmake --build .
+```
+
+To build on Android, type these commands:
 ```
 git clone https://github.com/HO-COOH/clinfo
 cd clinfo
