@@ -41,7 +41,7 @@ the platform responsible for the fault with the following one-liner:
     find /etc/OpenCL/vendors/ -name '*.icd' | while read OPENCL_VENDOR_PATH ; do clinfo -l > /dev/null ; echo "$? ${OPENCL_VENDOR_PATH}" ; done
 
 # Building
-
+ 
 <img
 src='https://api.travis-ci.org/Oblomov/clinfo.svg?branch=master'
 alt='Build status on Travis'
@@ -73,3 +73,17 @@ alt='Build status on AppVeyor'></a></td>
 <td><a href='https://ci.appveyor.com/api/projects/oblomov/clinfo/artifacts/clinfo.exe?job=platform%3a+x64'>64-bit</a></td>
 </tr>
 </table>
+
+## CMake support
+Cmake support is added for an alternative way to build on all platforms (Windows, Linux, Android). To build on all these platforms, type these commands:
+```
+git clone https://github.com/HO-COOH/clinfo
+cd clinfo
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+On Windows/Linux, use ``vcpkg install OpenCL`` to install the OpenCL SDK. ``vcpkg`` can be installed [here](https://github.com/microsoft/vcpkg). Note: On 64-bit Windows, you may use ``vcpkg install OpenCL:x64-windows`` instead.
+
+On Android, the OpenCL header files is automatically download from [KhronosGroup's repo](https://github.com/KhronosGroup/OpenCL-Headers) and the OpenCL runtime library is automatically found and linked.

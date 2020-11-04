@@ -28,12 +28,12 @@ else()
     FetchContent_GetProperties(OpenCLHeader SOURCE_DIR OpenCLHeaderDir)
     include_directories(${OpenCLHeaderDir})
 
-    #Link with OpenCL lib
+    #Find and kink with OpenCL lib
     add_library(OpenCL SHARED IMPORTED)
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-        set(OpenCLLibLocation "/system/vendor/lib64/libOpenCL.so")
+        find_file(OpenCLLibLocation libOpenCL.so PATHS "/system/vendor/lib64" "/system/lib64" REQUIRED)
     else()
-        set(OpenCLLibLocation "/system/vendor/lib/libOpenCL.so")
+        find_file(OpenCLLibLocation libOpenCL.so PATHS "/system/vendor/lib" "/system/lib" REQUIRED)
     endif()
 
     set_target_properties(OpenCL PROPERTIES IMPORTED_LOCATION ${OpenCLLibLocation})
